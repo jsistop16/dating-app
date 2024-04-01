@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
+import com.example.datingapp.IntroActivity
 import com.example.datingapp.MainActivity
 import com.example.datingapp.R
 import com.google.android.material.textfield.TextInputEditText
@@ -43,17 +45,16 @@ class SignUpActivity : AppCompatActivity() {
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = auth.currentUser
                         Log.d(TAG, user?.uid.toString())
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, IntroActivity::class.java)
                         startActivity(intent)
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        /*Toast.makeText(
+                        Toast.makeText(
                             baseContext,
-                            "Authentication failed.",
+                            task.exception.toString(),
                             Toast.LENGTH_SHORT,
                         ).show()
-                        updateUI(null)*/
                     }
                 }
         }
