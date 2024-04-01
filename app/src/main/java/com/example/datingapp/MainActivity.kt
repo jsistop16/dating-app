@@ -1,9 +1,14 @@
 package com.example.datingapp
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.slider.CardStackAdapter
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager
 import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.CardStackView
@@ -13,11 +18,20 @@ class MainActivity :AppCompatActivity() {
 
     lateinit var cardStackAdapter: CardStackAdapter
     lateinit var manager : CardStackLayoutManager
-
+    private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val setting = findViewById<ImageView>(R.id.settingIcon)
+        setting.setOnClickListener {
+
+            val auth = Firebase.auth
+            auth.signOut()//로그아웃
+            Log.d(TAG, "logout ok")
+            val intent = Intent(this, IntroActivity::class.java)
+            startActivity(intent)
+        }
         val cardStackView = findViewById<CardStackView>(R.id.cardStackView)
 
         manager = CardStackLayoutManager(baseContext, object  : CardStackListener{
