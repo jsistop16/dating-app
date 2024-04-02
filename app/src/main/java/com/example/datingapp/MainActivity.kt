@@ -70,5 +70,7 @@ class MainActivity :AppCompatActivity() {
         cardStackAdapter = CardStackAdapter(baseContext, testList)
         cardStackView.layoutManager = manager
         cardStackView.adapter = cardStackAdapter
+
+
     }
 }

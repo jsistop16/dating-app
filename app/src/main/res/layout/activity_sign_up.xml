@@ -61,6 +61,7 @@
             app:counterMaxLength="12">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nickname"
                 android:hint="닉네임"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -72,6 +73,7 @@
             app:counterMaxLength="12">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/gender"
                 android:hint="성별"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -83,6 +85,7 @@
             app:counterMaxLength="12">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/area"
                 android:hint="지역"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -94,6 +97,7 @@
             app:counterMaxLength="12">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/age"
                 android:hint="나이"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

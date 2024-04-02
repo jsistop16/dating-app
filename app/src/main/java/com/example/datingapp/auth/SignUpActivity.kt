@@ -9,9 +9,11 @@ import android.widget.Toast
 import com.example.datingapp.IntroActivity
 import com.example.datingapp.MainActivity
 import com.example.datingapp.R
+import com.example.datingapp.utils.FirebaseRef
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
@@ -19,6 +21,12 @@ class SignUpActivity : AppCompatActivity() {
     private val TAG = "SignUpActivity"
 
     private lateinit var auth : FirebaseAuth
+
+    private var uid = ""
+    private var gender = ""
+    private var area = ""
+    private var age = ""
+    private var nickname = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +39,12 @@ class SignUpActivity : AppCompatActivity() {
         signUpOk.setOnClickListener{
             val email = findViewById<TextInputEditText>(R.id.emailVal)
             val pwd = findViewById<TextInputEditText>(R.id.pwdVal)
+
+            gender = findViewById<TextInputEditText>(R.id.gender).text.toString()
+            age = findViewById<TextInputEditText>(R.id.age).text.toString()
+            area = findViewById<TextInputEditText>(R.id.area).text.toString()
+            nickname = findViewById<TextInputEditText>(R.id.nickname).text.toString()
+
 
 
             Log.d(TAG, email.text.toString())
@@ -45,6 +59,26 @@ class SignUpActivity : AppCompatActivity() {
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = auth.currentUser
                         Log.d(TAG, user?.uid.toString())
+
+                        uid = user?.uid.toString()
+
+                        //write rtdb
+                        //write message to the database
+                        //val database = Firebase.database
+                        //val myRef = database.getReference("message")
+                        //myRef.setValue("Hello, World!")
+                        //해당경로에 setValue로 데이터 삽입
+
+                        val userModel = UserDataModel(
+                            nickname,
+                            age,
+                            gender,
+                            area
+                        )
+                        FirebaseRef.userInfoRef.child(uid).child("111").setValue(userModel)
+                        //.child로 계속 가지치기 할수있음...
+                        //개쩐다...
+
                         val intent = Intent(this, IntroActivity::class.java)
                         startActivity(intent)
                     } else {
