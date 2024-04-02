@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.datingapp.R
+import com.example.datingapp.auth.UserDataModel
 
-class CardStackAdapter(val context : Context, val items : List<String>) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
+class CardStackAdapter(val context: Context, val items: MutableList<UserDataModel>) : RecyclerView.Adapter<CardStackAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardStackAdapter.ViewHolder {
 
         val inflater = LayoutInflater.from(parent.context)
@@ -24,8 +26,14 @@ class CardStackAdapter(val context : Context, val items : List<String>) : Recycl
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun binding(data : String){
 
+        val nickName = itemView.findViewById<TextView>(R.id.nickname)
+        val age = itemView.findViewById<TextView>(R.id.age)
+        val area = itemView.findViewById<TextView>(R.id.area)
+        fun binding(data : UserDataModel){
+            nickName.setText(data.nickname)
+            age.setText(data.age)
+            area.setText(data.area)
         }
     }
 }

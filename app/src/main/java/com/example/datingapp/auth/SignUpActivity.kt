@@ -75,7 +75,7 @@ class SignUpActivity : AppCompatActivity() {
                             gender,
                             area
                         )
-                        FirebaseRef.userInfoRef.child(uid).child("111").setValue(userModel)
+                        FirebaseRef.userInfoRef.child(uid).setValue(userModel)
                         //.child로 계속 가지치기 할수있음...
                         //개쩐다...
 
