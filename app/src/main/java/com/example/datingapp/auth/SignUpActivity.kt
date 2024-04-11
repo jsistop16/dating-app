@@ -1,11 +1,17 @@
 package com.example.datingapp.auth
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import com.example.datingapp.IntroActivity
 import com.example.datingapp.MainActivity
 import com.example.datingapp.R
@@ -15,6 +21,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -27,13 +36,29 @@ class SignUpActivity : AppCompatActivity() {
     private var area = ""
     private var age = ""
     private var nickname = ""
-
+    lateinit private var profileImg : ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         auth = Firebase.auth
 
+        profileImg = findViewById(R.id.profileImg)
+        //핸드폰기기에 있는 이미지를 가져오는거(갤러리 접근?)
+        val getAction = registerForActivityResult(
+            /*
+            갤러리에 접근해서 이미지를 뷰에 가져오는거까지만!!
+             */
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback { uri ->
+                profileImg.setImageURI(uri)
+            }
+        )
+
+
+        profileImg.setOnClickListener{
+            getAction.launch("image/*")
+        }
 
         val signUpOk = findViewById<Button>(R.id.signUpOk)
         signUpOk.setOnClickListener{
@@ -78,6 +103,8 @@ class SignUpActivity : AppCompatActivity() {
                         FirebaseRef.userInfoRef.child(uid).setValue(userModel)
                         //.child로 계속 가지치기 할수있음...
                         //개쩐다...
+                        uploadImg(uid)//image upload
+
 
                         val intent = Intent(this, IntroActivity::class.java)
                         startActivity(intent)
@@ -92,5 +119,27 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    private fun uploadImg(uid : String){
+        val storage = Firebase.storage
+        val storageRef = storage.reference.child(uid)//uid로 이미지 이름 설정
+
+        // Get the data from an ImageView as bytes
+        profileImg.isDrawingCacheEnabled = true
+        profileImg.buildDrawingCache()
+        val bitmap = (profileImg.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        var uploadTask = storageRef.putBytes(data)
+        uploadTask.addOnFailureListener {
+            // Handle unsuccessful uploads
+        }.addOnSuccessListener { taskSnapshot ->
+            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+            // ...
+        }
+
     }
 }

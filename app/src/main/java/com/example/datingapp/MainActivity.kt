@@ -85,7 +85,7 @@ class MainActivity :AppCompatActivity() {
                 //val post = dataSnapshot.getValue<Post>()
                 Log.d("what's in snapShot", dataSnapshot.toString())
                 for(dataModel in dataSnapshot.children){
-                    Log.d("dataSnapShoe's children", dataModel.toString())
+                    Log.d("dataSnapShot's children", dataModel.toString())
                     val userInfo = dataModel.getValue(UserDataModel::class.java)
                     userInfoList.add(userInfo!!)
                 }
