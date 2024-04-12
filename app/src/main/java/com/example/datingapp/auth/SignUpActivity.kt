@@ -36,7 +36,7 @@ class SignUpActivity : AppCompatActivity() {
     private var area = ""
     private var age = ""
     private var nickname = ""
-    lateinit private var profileImg : ImageView
+    lateinit var profileImg : ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -71,6 +71,10 @@ class SignUpActivity : AppCompatActivity() {
             nickname = findViewById<TextInputEditText>(R.id.nickname).text.toString()
 
 
+            //이메일 체크
+            //비밀번호 2중 체크
+            //회원가입시 입력값 검증 구현해야함
+
 
             Log.d(TAG, email.text.toString())
             Log.d(TAG, pwd.text.toString())
@@ -104,7 +108,8 @@ class SignUpActivity : AppCompatActivity() {
                         //.child로 계속 가지치기 할수있음...
                         //개쩐다...
                         uploadImg(uid)//image upload
-
+                        //img upload 수정해야함
+                        //upload안됨
 
                         val intent = Intent(this, IntroActivity::class.java)
                         startActivity(intent)
@@ -123,8 +128,8 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun uploadImg(uid : String){
         val storage = Firebase.storage
-        val storageRef = storage.reference.child(uid)//uid로 이미지 이름 설정
-
+        val storageRef = storage.reference.child(uid+".png")//uid로 이미지 이름 설정
+        Log.d("img uid in???", uid)
         // Get the data from an ImageView as bytes
         profileImg.isDrawingCacheEnabled = true
         profileImg.buildDrawingCache()

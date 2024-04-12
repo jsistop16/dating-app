@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.auth.UserDataModel
+import com.example.datingapp.setting.SettingActivity
 import com.example.datingapp.slider.CardStackAdapter
 import com.example.datingapp.utils.FirebaseRef
 import com.google.firebase.auth.ktx.auth
@@ -33,10 +34,8 @@ class MainActivity :AppCompatActivity() {
         val setting = findViewById<ImageView>(R.id.settingIcon)
         setting.setOnClickListener {
 
-            val auth = Firebase.auth
-            auth.signOut()//로그아웃
-            Log.d(TAG, "logout ok")
-            val intent = Intent(this, IntroActivity::class.java)
+
+            val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
         val cardStackView = findViewById<CardStackView>(R.id.cardStackView)
@@ -79,7 +78,7 @@ class MainActivity :AppCompatActivity() {
 
 
     }
-    private fun getUserCardInfo(){
+    private fun getUserCardInfo(){//data 불러오는부분
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //val post = dataSnapshot.getValue<Post>()
