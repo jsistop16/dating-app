@@ -36,14 +36,15 @@ class SignUpActivity : AppCompatActivity() {
     private var area = ""
     private var age = ""
     private var nickname = ""
+
     lateinit var profileImg : ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
         auth = Firebase.auth
-
         profileImg = findViewById(R.id.profileImg)
+
         //핸드폰기기에 있는 이미지를 가져오는거(갤러리 접근?)
         val getAction = registerForActivityResult(
             /*
@@ -99,6 +100,7 @@ class SignUpActivity : AppCompatActivity() {
                         //해당경로에 setValue로 데이터 삽입
 
                         val userModel = UserDataModel(
+                            uid,
                             nickname,
                             age,
                             gender,
@@ -128,7 +130,8 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun uploadImg(uid : String){
         val storage = Firebase.storage
-        val storageRef = storage.reference.child(uid+".png")//uid로 이미지 이름 설정
+        val storageRef = storage.reference
+        val imgRef = storageRef.child(uid+".png")//uid로 이미지 이름 설정
         Log.d("img uid in???", uid)
         // Get the data from an ImageView as bytes
         profileImg.isDrawingCacheEnabled = true
@@ -138,7 +141,7 @@ class SignUpActivity : AppCompatActivity() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        var uploadTask = storageRef.putBytes(data)
+        var uploadTask = imgRef.putBytes(data)
         uploadTask.addOnFailureListener {
             // Handle unsuccessful uploads
         }.addOnSuccessListener { taskSnapshot ->
