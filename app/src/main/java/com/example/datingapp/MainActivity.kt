@@ -154,6 +154,28 @@ class MainActivity :AppCompatActivity() {
     //db에 저장
     private fun userLikeOtherUser(myUid: String, otherUid: String) {
         FirebaseRef.userLikeRef.child(myUid).child(otherUid).setValue("like")
-
+        getOtherUserLikeList(otherUid)
     }
+
+    private fun getOtherUserLikeList(otherUid : String) {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for(dataModel in dataSnapshot.children){
+                    val likeUserKey = dataModel.key.toString()
+                    if (likeUserKey.equals(uid)) {
+                        Toast.makeText(this@MainActivity, "매칭 완료", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FirebaseRef.userLikeRef.child(otherUid).addValueEventListener(postListener)
+    }
+
+
+
 }
